@@ -1,0 +1,16 @@
+routes:
+  '/':
+    controller: IndexController
+    action: index
+  '/articles':
+    controller: ArticleController
+    action: lastArticles
+  '/articles/new':
+    controller: ArticleController
+    action: newArticle
+  '/500':
+    controller: ErrorController
+    action: error500
+  '/404':
+    controller: ErrorController
+    action: error404

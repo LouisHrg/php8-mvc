@@ -1,0 +1,40 @@
+<?php
+
+spl_autoload_register(function($class) {
+
+  $parts = explode('\\', $class);
+
+  $className = $parts[2];
+
+  switch ($parts[1]) {
+    case 'Core':
+      include 'core/' . $className . '.php';
+      break;
+  }
+
+});
+
+use App\Core\Database;
+
+switch ($argv[1]) {
+  case 'db:create':
+    bootstrapDatabase();
+    break;
+}
+
+
+function bootstrapDatabase() {
+    $db = Database::get()->pdo();
+
+    $db->setAttribute(
+      PDO::ATTR_ERRMODE,
+      PDO::ERRMODE_EXCEPTION
+    );
+
+    $sql ="CREATE table articles(
+     id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+     title VARCHAR( 250 ) NOT NULL,
+     slug VARCHAR( 150 ) NOT NULL);";
+
+    $db->exec($sql);
+}
