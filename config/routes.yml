@@ -6,6 +6,10 @@ routes:
     controller: ArticleController
     action: lastArticles
     secured: true
+  '/logout':
+    controller: AuthController
+    action: logout
+    secured: true
   '/login':
     controller: AuthController
     action: login
@@ -14,6 +18,9 @@ routes:
     controller: AuthController
     action: verify
     method: POST
+  '/register':
+    controller: AuthController
+    action: register
     guest: true
   '/500':
     controller: ErrorController

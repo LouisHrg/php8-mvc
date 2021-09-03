@@ -30,5 +30,28 @@ class User extends BaseModel {
     $this->password = password_hash($password, PASSWORD_DEFAULT);
     return $this;
   }
+
+  public static function registerForm() {
+    return [
+      'email' => [
+        'type' => 'string', 'required' => true,
+      ],
+      'lastname' => [
+        'type' => 'string', 'required' => true
+      ],
+      'firstname' => [
+        'type' => 'string', 'required' => true
+      ],
+      'password' => [
+        'type' => 'string', 'required' => true,
+      ],
+      'password_confirmation' => [
+        'type' => 'string',
+        'required' => true,
+        'equal' => 'password'
+      ]
+    ];
+  }
+
 }
 
