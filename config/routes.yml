@@ -5,9 +5,22 @@ routes:
   '/articles':
     controller: ArticleController
     action: lastArticles
+    secured: true
+  '/login':
+    controller: AuthController
+    action: login
+    guest: true
+  '/login/verify':
+    controller: AuthController
+    action: verify
+    method: POST
+    guest: true
   '/500':
     controller: ErrorController
     action: error500
   '/404':
     controller: ErrorController
     action: error404
+  '/403':
+    controller: ErrorController
+    action: error403

@@ -10,4 +10,8 @@ class ErrorController {
   public function error500(){
     echo "500 : Server Error";
   }
+
+  public function error403(){
+    echo "403 : Server Error";
+  }
 }

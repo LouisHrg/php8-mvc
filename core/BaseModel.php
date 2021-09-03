@@ -22,6 +22,8 @@ class BaseModel {
 
     public function save() {
 
+      $table = static::$table;
+
       $columns = $this->getColumns();
 
       $bindedParams = array_map(function($str) {
@@ -34,7 +36,7 @@ class BaseModel {
         $paramsStr = implode(',', $bindedParams);
 
         $stmt = $this->db->prepare(
-          "INSERT INTO static::$table (". $columnsStr .") VALUES (". $paramsStr .")"
+          "INSERT INTO $table (". $columnsStr .") VALUES (". $paramsStr .")"
         );
       } else {
 
@@ -49,12 +51,12 @@ class BaseModel {
         $stmt = $this->db->prepare("UPDATE static::$table SET ". $updateStr ." WHERE id=:id ");
 
         $id = $this->id;
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id);
       }
 
       foreach ($columns as $key => $value) {
         $field = $this->$value;
-        $stmt->bindParam($bindedParams[$key], $field);
+        $stmt->bindValue($bindedParams[$key], $field);
       }
 
       $stmt->execute();
@@ -86,19 +88,24 @@ class BaseModel {
       $output = [];
 
       foreach ($result as $row => $item) {
+
+        $model = get_called_class();
+        $obj = new $model;
+
         foreach ($item as $key => $value) {
           if(!is_integer($key)) {
-            $output[$row][$key] = $value;
+            $obj->$key = $value;
           }
         }
+        array_push($output, $obj);
       }
       return $output;
     }
 
-    public static function where($column, $value) {
+    public static function where($column, $value, $operator = "=") {
       $query = new DatabaseQuery(static::$table);
 
-      $query->where($column, $value);
+      $query->where($column, $value, $operator);
 
       return $query;
     }
@@ -118,9 +125,9 @@ class BaseModel {
       $stmt->bindParam(':id', $id);
       $stmt->execute();
 
-      $result = self::parseResult($stmt->fetchAll())[0];
-
-      return self::mapDataToClass($result);
+      $parsed = self::parseResult($stmt->fetchAll());
+      if(!empty($parsed)) return $parsed[0];
+      return null;
     }
 
     public static function mapDataToClass($data) {

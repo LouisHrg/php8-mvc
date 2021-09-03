@@ -17,13 +17,19 @@ class DatabaseQuery {
     $this->pdo = Database::get()->pdo();
   }
 
-  public function where($column, $value) {
+  public function where($column,  $value, $operator = "=") {
+    if(is_null($value)) $value = 'NULL';
     $this->where[$column] = [
         'value' => $value,
-        'operation' => '=',
+        'operation' => $operator,
     ];
-
     return $this;
+  }
+
+  public function getOne() {
+    $results = $this->get();
+    if(empty($results)) return null;
+    return $results[0];
   }
 
   public function get() {
@@ -77,7 +83,7 @@ class DatabaseQuery {
     $cpt = 0;
     foreach ($this->where as $column => $data) {
       if($cpt === 0) $output .= ' WHERE ';
-      $output .= $column. ' = :'.$column. ' ';
+      $output .= $column. ' '. $data['operation'] .' :'.$column. ' ';
       if($cpt === 0 && $cpt+1 !== count($this->where)) {
         $output .= ' AND ';
       }

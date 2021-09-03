@@ -31,10 +31,19 @@ function bootstrapDatabase() {
       PDO::ERRMODE_EXCEPTION
     );
 
-    $sql ="CREATE table articles(
+    $articlesTable ="CREATE table IF NOT EXISTS articles(
      id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
      title VARCHAR( 250 ) NOT NULL,
      slug VARCHAR( 150 ) NOT NULL);";
 
-    $db->exec($sql);
+    $usersTable ="CREATE TABLE IF NOT EXISTS users(
+     id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+     firstname VARCHAR( 50 ),
+     lastname VARCHAR( 50 ),
+     email VARCHAR( 255 ) NOT NULL UNIQUE,
+     password VARCHAR( 255 ) NOT NULL
+    );";
+
+    $db->exec($articlesTable);
+    $db->exec($usersTable);
 }
