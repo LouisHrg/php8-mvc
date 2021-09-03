@@ -6,6 +6,7 @@ use App\Models\User;
 
 class Auth {
   public static function connect($user, $password) {
+
     if(password_verify($password, $user->password)) {
       $_SESSION['user_id'] = $user->id;
       $_SESSION['expire_at'] = time() + 1800;
@@ -14,7 +15,6 @@ class Auth {
 
   public static function verify() {
     if(isset($_SESSION['user_id']) && isset($_SESSION['expire_at'])) {
-      //if($_SESSION['expire_at'] > time()) self::logout();
       $user = User::find($_SESSION['user_id']);
       if($user) return true;
     }
@@ -27,7 +27,13 @@ class Auth {
   }
 
   public static function logout() {
-    unset($_SESSION['user_id']);
-    unset($_SESSION['expire_at']);
+    if(isset($_SESSION['user_id'])) {
+      unset($_SESSION['user_id']);
+    }
+    if(isset($_SESSION['expire_at'])) {
+      unset($_SESSION['expire_at']);
+    }
+
+    Router::redirect('/login')
   }
 }

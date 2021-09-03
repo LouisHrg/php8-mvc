@@ -21,23 +21,21 @@ class Router {
 
       $class = self::CONTROLLERS_PATH.$route['controller'];
 
-      // Verifier authentification
-
       if(
         isset($route['method']) &&
         $route['method'] !== $_SERVER['REQUEST_METHOD']
       ) {
-        header('Location: /404');
+        self::redirect('/404');
       }
 
       if(isset($route['secured']) && $route['secured'] && !Auth::verify())
       {
-        header('Location: /403');
+        self::redirect('/403');
       }
 
       if(isset($route['guest']) && $route['guest'] && Auth::verify())
       {
-        header('Location: /');
+        self::redirect('/');
       }
 
       if(class_exists($class)) {
@@ -47,13 +45,17 @@ class Router {
           $controller->$action();
           die();
         } else {
-          header('Location: /500');
+          self::redirect('/500');
         }
       } else {
-        header('Location: /500');
+        self::redirect('/500');
       }
     } else {
-      header('Location: /404');
+      self::redirect('/404');
     }
+  }
+
+  public static function redirect($route) {
+    header('Location: '.$route);
   }
 }

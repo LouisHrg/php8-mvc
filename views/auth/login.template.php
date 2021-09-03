@@ -1,4 +1,4 @@
-<form method="POST" action="/login/verify">
+<form method="POST" action="/login">
   <label for="email"> Votre email </label>
   <input type="text" name="email" />
   <br>

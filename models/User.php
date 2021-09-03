@@ -34,21 +34,31 @@ class User extends BaseModel {
   public static function registerForm() {
     return [
       'email' => [
-        'type' => 'string', 'required' => true,
+        'type' => 'email', 'required' => true,
       ],
       'lastname' => [
-        'type' => 'string', 'required' => true
+        'required' => true
       ],
       'firstname' => [
-        'type' => 'string', 'required' => true
+        'required' => true
+      ],
+      'password' => [
+        'required' => true,
+      ],
+      'password_confirmation' => [
+        'required' => true,
+        'equal' => 'password'
+      ]
+    ];
+  }
+
+  public static function loginForm() {
+    return [
+      'email' => [
+        'type' => 'string', 'required' => true,
       ],
       'password' => [
         'type' => 'string', 'required' => true,
-      ],
-      'password_confirmation' => [
-        'type' => 'string',
-        'required' => true,
-        'equal' => 'password'
       ]
     ];
   }

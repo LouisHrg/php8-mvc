@@ -7,6 +7,7 @@ use App\Models\User;
 
 class IndexController {
   public function index(){
+
     return new View();
   }
 }

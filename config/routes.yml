@@ -14,10 +14,6 @@ routes:
     controller: AuthController
     action: login
     guest: true
-  '/login/verify':
-    controller: AuthController
-    action: verify
-    method: POST
   '/register':
     controller: AuthController
     action: register
