@@ -102,4 +102,33 @@ class BaseModel {
 
       return $query;
     }
+
+    public function delete() {
+      $db = Database::get()->pdo();
+      $sth = $db->prepare(
+        "DELETE FROM ".static::$table. " WHERE id =" . $this->id);
+      $sth->execute();
+    }
+
+    public static function find($id) {
+      $db = Database::get()->pdo();
+      $stmt = $db->prepare(
+        "SELECT * FROM ".static::$table. " WHERE id = :id");
+
+      $stmt->bindParam(':id', $id);
+      $stmt->execute();
+
+      $result = self::parseResult($stmt->fetchAll())[0];
+
+      return self::mapDataToClass($result);
+    }
+
+    public static function mapDataToClass($data) {
+      $model = get_called_class();
+      $obj = new $model;
+      foreach ($data as $key => $value) {
+        $obj->$key = $value;
+      }
+      return $obj;
+    }
 }

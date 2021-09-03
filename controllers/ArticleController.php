@@ -8,9 +8,8 @@ use App\Core\View;
 class ArticleController {
   public function lastArticles(){
 
-    $result = Article::where('title', 'mon-super-article')
-    ->get();
+    $article = Article::find(5);
 
-    var_dump($result);
+    $article->delete();
   }
 }
