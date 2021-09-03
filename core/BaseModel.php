@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Core\Database;
+use App\Core\DatabaseQuery;
 
 class BaseModel {
 
@@ -81,7 +82,7 @@ class BaseModel {
       return $columns;
     }
 
-    private static function parseResult($result) {
+    public static function parseResult($result) {
       $output = [];
 
       foreach ($result as $row => $item) {
@@ -92,5 +93,13 @@ class BaseModel {
         }
       }
       return $output;
+    }
+
+    public static function where($column, $value) {
+      $query = new DatabaseQuery(static::$table);
+
+      $query->where($column, $value);
+
+      return $query;
     }
 }

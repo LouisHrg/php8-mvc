@@ -5,9 +5,6 @@ routes:
   '/articles':
     controller: ArticleController
     action: lastArticles
-  '/articles/new':
-    controller: ArticleController
-    action: newArticle
   '/500':
     controller: ErrorController
     action: error500

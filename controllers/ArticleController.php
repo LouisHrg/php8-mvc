@@ -8,17 +8,9 @@ use App\Core\View;
 class ArticleController {
   public function lastArticles(){
 
-    $articles = Article::all();
+    $result = Article::where('title', 'mon-super-article')
+    ->get();
 
-    return new View('articles/index', [
-      'articles' => $articles
-    ]);
-  }
-  public function newArticle(){
-
-    $article = new Article;
-    $article->title = 'new';
-    $article->slug = "new";
-    $article->save();
+    var_dump($result);
   }
 }
